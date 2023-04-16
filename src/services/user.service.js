@@ -21,7 +21,12 @@ const createUser = async (displayName, email, password, image) => {
   if (user) {
     throw httpErrGenerator(409, 'User already registered');
   }
-  const createNewUser = await User.create({ displayName, email, password, image });
+  const createNewUser = await User.create({
+    displayName,
+    email,
+    password,
+    image,
+  });
   return createNewUser;
 };
 
@@ -32,9 +37,21 @@ const getAll = async () => {
   return users;
 };
 
+const getById = async (id) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+  if (!user) {
+    throw httpErrGenerator(404, 'User does not exist');
+  }
+  return user;
+};
+
 module.exports = {
   authenticate,
   createUser,
   httpErrGenerator,
   getAll,
+  getById,
 };
