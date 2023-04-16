@@ -14,6 +14,19 @@ const authenticate = async (email, password) => {
   return token;
 };
 
+const createUser = async (displayName, email, password, image) => {
+  const user = await User.findOne({
+    where: { email },
+  });
+  if (user) {
+    throw httpErrGenerator(409, 'User already registered');
+  }
+  const createNewUser = await User.create({ displayName, email, password, image });
+  return createNewUser;
+};
+
 module.exports = {
   authenticate,
+  createUser,
+  httpErrGenerator,
 };
