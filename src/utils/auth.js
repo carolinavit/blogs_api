@@ -8,13 +8,19 @@ const configJWT = {
 };
 
 const generateToken = (payload) => {
-  const token = jwt.sign(payload.toJSON(), secretKey, configJWT);
+  const token = jwt.sign(payload, secretKey, configJWT);
   return token;
 };
 
 const validateToken = (token) => {
-  const isValid = jwt.verify(token, secretKey);
-  return isValid;
+  if (!token) return false;
+  try {
+    const isValid = jwt.verify(token, secretKey);
+
+    return isValid;
+  } catch (error) {
+    return {};
+  }
 };
 
 module.exports = {

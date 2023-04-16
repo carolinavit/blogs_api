@@ -7,6 +7,7 @@ const signin = async (req, res, _next) => {
     const login = await userService.authenticate(email, password);
     return res.status(200).json({ token: login });
   } catch (error) {
+    console.log(error);
     return res.status(error.status).json({ message: error.message });
   }
 };
@@ -20,13 +21,19 @@ const createUser = async (req, res) => {
       password,
       image,
     );
-      console.log(newUser);
-    const token = generateToken(newUser);
+    const token = generateToken(newUser.dataValues);
     
     return res.status(201).json({ token });
   } catch (error) {
-    console.log(error);
-    // isso aqui nao ta certo pelo que eu entendi
+    return res.status(error.status).json({ message: error.message });
+  }
+};
+
+const getAll = async (_req, res) => {
+  try {
+    const users = await userService.getAll();
+    return res.status(200).json(users);
+  } catch (error) {
     return res.status(error.status).json({ message: error.message });
   }
 };
@@ -34,4 +41,5 @@ const createUser = async (req, res) => {
 module.exports = {
   signin,
   createUser,
+  getAll,
 };
