@@ -26,7 +26,7 @@ const createUser = async (displayName, email, password, image) => {
     email,
     password,
     image,
-  });
+  }); 
   return createNewUser;
 };
 
